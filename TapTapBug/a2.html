@@ -1,0 +1,473 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tap Tap Bug</title>
+<link rel="stylesheet" type="text/css" href="game.css" />
+</head>
+<body topmargin="50px">
+<div id="Starpage" style="display:block" align="center">
+<p>Tap Tap Bug</p>
+<table name="starttable" width="400px" height="300px" cellpadding="10dp">
+	<tr>
+    	<td>level:</td>
+        <td><input name="level" type="radio" value="1" checked="checked" onClick="check()"/>&nbsp;&nbsp;1</td>
+        <td><input name="level" type="radio" value="2" onClick="check()"/>&nbsp;&nbsp;2</td>
+    </tr>  
+    <tr>
+    	<td>High Score:</td>
+        <td colspan="2" class="code">0</td>
+    </tr>  
+    <tr>
+    	<td align="center" colspan="3"><input type="button" id="button_start" onclick="start()" value="Start" /></td>
+    </tr>  
+</table>
+</div>
+
+<div id="gamepage" align="center" style="display:none" >
+	<table name="infotable" width="400px" height="150px" align="center">
+    <tr>
+    	<td colspan="5" class="code">Level 1</td>
+    </tr>
+	<tr>
+   		<td class="right">60</td> 
+    	<td class="left">sec</td>  
+        <td width="200px" align="center">
+            <img alt="Pause" src="pause.png" height="60" id="stopanimate" style="display:block" onClick="stopbutton_click()">
+            <img alt="Play" src="play.png" height="60" id="startanimate" style="display:none" onClick="startbutton_click()">
+        </td>  
+        <td class="right">Score:</td> 
+    	<td class="left">0</td>  
+    </tr>  
+</table>
+<canvas id="myCanvas" width="400px" height="600px" onMouseDown="Kill(event)" >your browser does not support the canvas tag </canvas>
+</div>
+<div id="gameover" align="center" style="display:none">
+	<table name="finishtable" width="400px" height="150px" align="center" >
+    <tr>
+    	<td colspan="2" class="code">Game over</td>
+    </tr>
+	<tr>  
+        <td class="right">level 1:</td> 
+    	<td class="code">0</td>  
+    </tr> 
+    <tr>  
+        <td  class="right">level 2:</td> 
+    	<td class="code" >0</td>  
+    </tr> 
+    <tr>   
+    <td  class="left">	<button id="restart" onclick="gamerestart()">Restart</button></td> 
+    	<td  class="right">	<button id="exit" onclick="gameexit()">Exit</button></td>  
+      </tr> 
+</table>
+</div>
+<script type="text/javascript">
+
+var level1_score=0;
+var level2_score=0;
+var highest_level1_score=0;
+var highest_level2_score=0;
+
+var timer=60;
+var timer1=0;
+var time=Math.floor(Math.random()*3)+1;
+
+var level1foods = new Array();
+var level2foods = new Array();
+var bugs = new Array();
+
+var playanimate =true;
+var level1foodexist = true;
+var level2foodexist = false;
+
+var canvas=document.getElementById('myCanvas');
+var context=canvas.getContext('2d');
+var startbutton = document.getElementById('startanimate');
+var stopbutton = document.getElementById('stopanimate');
+var td=document.getElementsByTagName('td');
+var lev= document.getElementsByName('level');
+var startpage= document.getElementById('Starpage');
+var gamepage= document.getElementById('gamepage');
+var gameover= document.getElementById('gameover');
+td.item(4).innerHTML=highest_level1_score;
+function check()
+{
+	if(lev.item(0).checked)
+		td.item(4).innerHTML=highest_level1_score;
+	else
+		td.item(4).innerHTML=highest_level2_score;
+};
+function start()
+  {
+	  	
+		startpage.style.display = "none";
+		gamepage.style.display = "block";
+		initial();				
+  };
+function gameexit()
+{
+		td.item(4).innerHTML=highest_level1_score;
+		startpage.style.display = "block";
+		gamepage.style.display = "none";
+		gameover.style.display = "none";
+		
+};
+function gamerestart()
+{
+	startpage.style.display = "none";
+	gamepage.style.display = "block";
+	gameover.style.display = "none";
+	initial();
+};
+
+
+function startbutton_click(){	
+		startbutton.style.display = "none";
+		stopbutton.style.display = "block"; 
+		playanimate = true;
+		animatedown();
+	};
+function stopbutton_click(){
+		stopbutton.style.display = "none";
+		startbutton.style.display = "block";
+		playanimate = false;
+		animatedown();
+	};
+
+function shape_food(x,y){
+	 this.x= x;
+	 this.y=y;
+	 };
+
+function initial()
+{
+	context.strokeStyle = 'black';
+	context.lineWidth='5';
+	context.strokeRect(0,0,400,600);
+	timer=60;
+	timer1=0;
+	time=Math.floor(Math.random()*3)+1;
+	level1_score=0;
+	level2_score=0;
+	td.item(6).innerHTML="level 1";
+	td.item(11).innerHTML=level1_score;
+	level1foods = [];
+	level2foods = [];
+	bugs = [];
+	for (var i=0; i<5; i++)
+	{
+	var x = 10+Math.random()*380;
+	var y = 200+Math.random()*390;
+	level1foods.push(new shape_food(x,y));
+	};
+	playanimate =true;
+	level1foodexist = true;
+	level2foodexist = false;
+	animatedown();
+};
+
+	
+function shape_bug(x,y,type,speed,score){
+		this.x=x;
+		this.y=y;
+		this.type=type;
+		this.speed=speed;
+		this.score=score;
+	};
+
+
+function animate(foods){
+	 context.strokeStyle = 'black';
+	 context.lineWidth='5';
+	 context.strokeRect(0,0,400,600);
+	if(playanimate){
+		timer1+=33.3;
+		
+		if(timer1<1000)
+		{		
+		context.clearRect(3,3,395,595);
+		var foodslength= foods.length;
+		for(var i=0; i<foodslength; i++){
+				var tmpfood = foods[i];
+				context.beginPath();
+				context.fillStyle='blue';
+				context.arc(tmpfood.x,tmpfood.y,5,0,Math.PI*2,false);
+				context.closePath();
+				context.fill();		
+			}	
+		 var bugslength= bugs.length;
+		 for(var j=0; j<bugslength; j++){
+				var tmpbug = bugs[j]; 		
+				context.beginPath();
+				context.fillStyle=tmpbug.type;
+				if(tmpbug.y==15)
+				{
+					context.arc(tmpbug.x,tmpbug.y,10,0,Math.PI*2,false);
+					context.closePath();
+					context.fill(); 				
+					context.clearRect(tmpbug.x,tmpbug.y,10,10);	
+					tmpbug.y+=1;		
+					}
+				else{
+					var distance=Math.sqrt((tmpbug.x-foods[0].x)*(tmpbug.x-foods[0].x)+(tmpbug.y-foods[0].y)*(tmpbug.y-foods[0].y));
+					var f=0;
+					for(var k=0; k<foodslength; k++){
+						var tmpfood1 = foods[k];
+						var distance1=Math.sqrt((tmpbug.x-tmpfood1.x)*(tmpbug.x-tmpfood1.x)+(tmpbug.y-tmpfood1.y)*(tmpbug.y-tmpfood1.y));
+						if (distance>distance1)
+							{distance=distance1;f=k}					
+						}
+					var tmpangle=Math.atan((tmpbug.x-foods[f].x)/(tmpbug.y-foods[f].y));
+					if(tmpbug.y >foods[f].y)
+						{
+							var rotateangle = 1.25*Math.PI-tmpangle;
+							tmpbug.x-=tmpbug.speed*Math.sin(tmpangle);
+							tmpbug.y-=tmpbug.speed*Math.cos(tmpangle);
+						}
+					else
+						{
+							var rotateangle = Math.PI/4-tmpangle;
+					
+							tmpbug.x+=tmpbug.speed*Math.sin(tmpangle);
+							tmpbug.y+=tmpbug.speed*Math.cos(tmpangle);
+						}
+					 var bugslength1= bugs.length;
+		 			for(var m=0; m<bugslength1; m++)
+					{
+						var tmpbug1 = bugs[m]; 	
+						if(tmpbug1 === tmpbug)
+							continue;
+						else
+							{
+								var bugdistance=Math.sqrt((tmpbug1.x-foods[0].x)*(tmpbug1.x-foods[0].x)+(tmpbug1.y-foods[0].y)*(tmpbug1.y-foods[0].y));
+								var bugf=0;
+								for(var n=0; n<foodslength; n++){
+									var bugtmpfood1 = foods[n];
+									var bugdistance1=Math.sqrt((tmpbug1.x-bugtmpfood1.x)*(tmpbug1.x-bugtmpfood1.x)+(tmpbug1.y-bugtmpfood1.y)*(tmpbug1.y-bugtmpfood1.y));
+									if (bugdistance>bugdistance1)
+										{bugdistance=bugdistance1;bugf=n}					
+									}
+								var bugtmpangle=Math.atan((tmpbug1.x-foods[bugf].x)/(tmpbug1.y-foods[bugf].y));
+								if((tmpbug1.y -foods[bugf].y)>0)
+								{
+									//var bugrotateangle = 1.25*Math.PI-bugtmpangle;
+									var bugX= tmpbug1.x-tmpbug1.speed*Math.sin(bugtmpangle);
+									var bugY= tmpbug1.y-tmpbug1.speed*Math.cos(bugtmpangle);
+								}
+								else
+								{
+									//var bugrotateangle = Math.PI/4-bugtmpangle;
+					
+									var bugX= tmpbug1.x+tmpbug1.speed*Math.sin(bugtmpangle);
+									var bugY= tmpbug1.y+tmpbug1.speed*Math.cos(bugtmpangle);
+								}
+								var detectdistance =Math.sqrt((tmpbug.x-bugX)*(tmpbug.x-bugX)+(tmpbug.y-bugY)*(tmpbug.y-bugY));
+								var detectangle = Math.atan((tmpbug.x-bugX)/(tmpbug.y-bugY));
+								if(detectdistance< 20)
+									{
+										if(tmpbug.speed < tmpbug1.speed)	
+											{
+												if(tmpbug.y > bugY)
+														tmpbug.x+=(20-detectdistance)*Math.sin(detectangle);
+													else
+														tmpbug.x-=(20-detectdistance)*Math.sin(detectangle);								
+											}
+										else if(tmpbug.speed == tmpbug1.speed)
+										{
+											if(tmpbug.x > bugX)
+													continue;
+											else
+												{
+													if(tmpbug.y > bugY)
+														tmpbug.x+=(20-detectdistance)*Math.sin(detectangle);
+													else
+														tmpbug.x-=(20-detectdistance)*Math.sin(detectangle);
+												}
+
+										}
+										else
+											continue;							
+								}
+							}
+					}
+								
+					
+					
+					context.save();
+					context.translate(tmpbug.x,tmpbug.y);
+					context.rotate(rotateangle);	
+					context.beginPath();
+					context.arc(-10,-10,10,0,Math.PI*2,false);
+					context.closePath();
+					context.fill(); 					
+					context.clearRect(-10,-10,10,10);
+					context.restore();
+					var d = distance-tmpbug.speed;				
+					if(d<7) 
+					{ 
+						if(foods.length==1)
+							context.clearRect(foods[0].x-5,foods[0].y-5,10,10);
+						foods.splice(f,1);						
+						break;
+					}
+
+				}
+				
+				
+			}	
+			
+		}
+		else
+			{
+				timer--;
+				timer1=0;
+				if(time==1)
+					{
+						var x = 10+Math.random()*380;
+						var y = 15;
+						var c = Math.floor(Math.random()*10);
+						if(c<3)
+							{
+								var type='black';
+								var score=5;
+								if(level1foodexist)
+									var speed=0.15*33.3;
+								else
+									var speed=0.2*33.3;
+							}
+						else if(c>=3&&c<6)
+								{
+								var type='red';
+								var score=3;
+								if(level1foodexist)
+									var speed=0.075*33.3;
+								else
+									var speed=0.1*33.3;
+							}
+						else if(c>=6&&c<10)
+								{
+								var type='orange';
+								var score=1;
+								if(level1foodexist)
+									var speed=0.06*33.3;
+								else
+									var speed=0.08*33.3;
+								}
+					 
+					bugs.push(new shape_bug(x,y,type,speed,score));
+					time=Math.floor(Math.random()*3)+1;
+				}
+				else
+					time--;
+			}
+		}
+		
+	};
+
+function animatedown(){
+	
+	if(playanimate)
+	{
+		
+		td.item(7).innerHTML=timer;
+		if (level1foodexist)
+		{
+			if (timer*1000>=0)
+				{
+					animate(level1foods);
+					//animatedown();
+					if(level1foods.length==0)
+						level1foodexist=false;	
+					setTimeout(animatedown,33.3);
+				
+				}
+			else
+				{
+					td.item(6).innerHTML="level 2";
+					td.item(11).innerHTML=level2_score;
+					for (var i=0; i<5; i++)
+					{
+					var x = 10+Math.random()*380;
+					var y = 200+Math.random()*390;
+					level2foods.push(new shape_food(x,y));
+					};
+					timer=60;
+					bugs = [];
+					level1foodexist=false;
+					level2foodexist=true;
+					animatedown();
+					}
+		}	
+		else if (level2foodexist)
+		{
+				if (timer*1000>0)
+				{
+					animate(level2foods);
+					if(level2foods.length==0)
+						level2foodexist=false;
+					//timer--;
+					//animatedown();
+					setTimeout(animatedown,33.3);
+				}
+				else
+				{ 
+				if(highest_level1_score < level1_score )
+					highest_level1_score=level1_score;
+				if(highest_level2_score < level2_score)
+					highest_level2_score=level2_score;				
+				td.item(14).innerHTML=level1_score;
+				td.item(16).innerHTML=level2_score;		
+				gamepage.style.display = "none";
+				gameover.style.display = "block";
+					
+				}
+		}
+		else
+			{ 
+				if(highest_level1_score < level1_score )
+					highest_level1_score=level1_score;
+				if(highest_level2_score < level2_score)
+					highest_level2_score=level2_score;					
+				td.item(14).innerHTML=level1_score;
+				td.item(16).innerHTML=level2_score;	
+				gamepage.style.display = "none";
+				gameover.style.display = "block";
+					
+				}
+		
+	}
+	//else
+		//setTimeout(animatedown,33.3);
+	};
+
+function Kill(e){
+		var mousecanvasX=Math.floor(e.pageX-canvas.offsetLeft);
+		var mousecanvasY=Math.floor(e.pageY-canvas.offsetTop);
+		if(playanimate && timer > 0)
+			{
+				 var bugslength= bugs.length;
+				for(var j=0; j<bugslength; j++)
+				{
+						var tmpbug = bugs[j];
+						var distance=Math.sqrt((tmpbug.x-mousecanvasX)*(tmpbug.x-mousecanvasX)+(tmpbug.y-mousecanvasY)*(tmpbug.y-mousecanvasY));
+						if(distance<40)
+							{
+								if (level1foodexist)
+									{level1_score+=tmpbug.score; td.item(11).innerHTML=level1_score;}
+								else
+									{level2_score+=tmpbug.score;td.item(11).innerHTML=level2_score;}
+								context.clearRect(tmpbug.x-10,tmpbug.y-10,20,20);
+								bugs.splice(j,1);						
+								
+							}
+				}
+							
+			}
+
+	};
+
+
+</script>
+
+</body>
+</html>

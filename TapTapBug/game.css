@@ -1,0 +1,53 @@
+@charset "utf-8";
+/*Wang Chunhong's second CSS Document */
+body
+{
+	background-color:#00FFF0;
+	background-attachment:scroll;
+	color:#00F;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:large;
+}
+
+h
+{
+	cursor:wait;
+	font-weight:bold;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#000;
+	text-align:center;
+}
+ 
+p
+{
+	cursor:text;
+	color:#0F0;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:30px;
+	text-align:center;
+}
+
+
+
+li
+{
+	cursor:move;
+	list-style:none;
+	list-style-position:inside;
+}
+
+table
+{
+	align-self:center;
+	font:Verdana, Geneva, sans-serif;
+	font-size:20px;
+}
+
+td.code
+{
+	font-weight:bold;
+	text-align:center;
+	font-size:24px;
+}
+td.left{text-align:left;  width:50px;}
+td.right{text-align:right;width:50px;}

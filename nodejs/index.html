@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="requests.js"></script>
+        <title>CSC309 - Assignment3</title>
+    </head>
+    <body>
+        <form id="selections">
+            <input id="allTweets" type="radio" name="selection">Get All Tweets<br>
+            <input id="allTwitterUsers" type="radio" name="selection">Get Twitter Users<br>
+            <input id="allExternalLinks" type="radio" name="selection">Get All External Links<br>
+            <input id="tweet" type="radio" name="selection">Get Tweet By ID
+            <input id="tweetId" type="text"><br>
+            <input id="userInfo" type="radio" name="selection">Get User Info by User Screen Name
+            <input id="userScreenName" type="text"><br>
+            <input id="searchText" type="radio" name="selection">Search Text in Tweets (Case Sensitive)
+            <input id="targetText" type="text"><br>
+        </form>
+        <div>
+            <pre id="resultPanel"></pre>
+        </div>
+    </body>
+</html>

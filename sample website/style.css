@@ -1,0 +1,200 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+body{
+  line-height: 1.5;
+  margin: 0 auto;
+  padding: 0px 15px;
+  max-width: 95%;
+}
+
+.center{
+  width: 950px;
+  margin: 0 auto;
+  max-width: 95%;
+}
+
+@media screen and (max-width: 1000px){
+  #content{
+  margin: 35px 1px 1px 1px;
+  padding-top: 3em;
+  }
+}
+
+#content{
+  margin: 35px 1px 1px 1px;
+  padding-top: 3em;
+  max-width: 95%;
+}
+
+h1{
+  font-size: 30px;
+  font-weight: 120;
+  line-height: 1;
+  margin: 10px 10px 15px 10px;
+  max-width: 95%;
+}
+
+h1, h2, h3, h4, h6, ul {
+  margin: 1em 0;
+  max-width: 95%;
+}
+
+p{
+  margin: 10px;
+  max-width: 95%;
+}
+
+footer{
+  text-align: center;
+  color: #777777;
+  max-width: 95%;
+}
+
+hr.style0 {
+  height: 10px;
+  border: 0;
+  box-shadow: 0 10px 10px -10px #8c8b8b inset;
+  max-width: 95%;
+}
+
+#cs-logo {
+  width: 500px;
+  margin: 0 auto;
+  max-width: 95%;
+}
+
+/* Table */
+.boxer .box-row {
+   display: table-row;
+   max-width: 95%;
+}
+ 
+.boxer .box {
+   display: table-cell;
+   text-align: center;
+   vertical-align: top;
+   border: 1px solid black;
+   width: 29%;
+   padding: 8px;
+   max-width: 95%;
+}
+
+.clear {
+  clear:both;
+}
+img {
+  border: 0;
+}
+
+a{
+  padding: 2px 2px;
+  border-radius: 5px;
+  outline: none;
+  max-width: 95%;
+  color: #1199FF;
+  text-decoration: none;
+  transition: 0.8s;
+}
+
+a:hover, a:focus {
+  background: #EEFFFF;
+  transition: 0s;
+}
+
+nav{
+  position: fixed;
+  width: 850px;
+  line-height: 2.1;
+  margin: -58px 0 0 -10px;
+  padding: 10px 0 7px 0;
+  z-index: 1;
+}
+
+@media screen and (max-width: 1000px){ 
+  nav{
+    position: fixed;
+    width: auto;
+    height: auto;
+  }
+}
+
+li{
+  margin-left: 45px;
+}
+nav li{
+  margin: 0;
+  display: inline-block;
+}
+
+nav li a{
+  padding: 8px 8px 8px 8px;
+  border-radius: 50px;
+}
+
+#nav-background{ 
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  height: 72px;
+  margin: -45px;
+  z-index: 1;
+}
+
+.here{ 
+  padding: 4px 8px 4px 8px;
+  border-radius: 7px;
+  background: #1199FF;
+  color: white;
+}
+.here:hover{
+  color: white;
+}
+
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*uoftcs logo*/
+.logo{
+  border: 1px solid white;
+  border-radius: 50px;
+  padding: 15px;
+  display: block;
+  margin: 40px auto 10px auto;
+  width: 100%;
+  max-width: 95%;
+  transition: 0.5s;
+}
+.logo:hover{
+  border: 1px solid #1199FF;
+  border-radius: 50px;
+  transition: 0s;
+}
+
+/* Feedback form */
+#feedback-form input {
+  font-size: 20px;
+  border: 1px solid grey;
+  border-radius: 2.5px;
+  width: 300px;
+  max-width: 95%;
+  padding: 0.5em;
+}
+
+#comment {
+  width: 100%;
+  max-width: 95%;
+  font-size: 18px;
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+#instructor-select {
+  font-size: 18px;
+  max-width: 95%;
+}
+
+
